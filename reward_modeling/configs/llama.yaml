@@ -1,0 +1,57 @@
+llama_config:
+  seed: 1
+  reward_model_name: gpt2
+  loss_fn: cumulative_mse
+  adam_beta1: 0.9
+  adam_beta2: 0.95
+  adam_epsilon: 1e-12
+  weight_decay: 0.01
+  warmup_steps: 0
+  per_device_train_batch_size: 2
+  per_device_eval_batch_size: 2
+  eval_steps: 200
+  save_strategy: steps
+  save_steps: 500
+  max_length: 4096
+  logging_steps: 1000
+  max_grad_norm: 2.0
+  save_total_limit: 5
+  dtype: bfloat16
+  eval_size: 1000
+  verbose: true
+  log_wandb: true
+  save_safetensors: False
+
+  reward_model_name: TinyLlama-1.1B-intermediate-step-1431k-3T
+  loss_fn: cumulative_mse
+  use_lora: false
+  distil_into_arm: false
+  
+
+rm_toxicity:
+  out_features: 7
+  learning_rate: 2e-5
+  num_train_epochs: 1
+  datasets:
+    - jigsaw_unintended_bias
+  metrics: mse
+  jigsaw_dir: path/to/jigsaw_unintended_bias_data
+
+llama_distil:
+  reward_model_name: TinyLlama-1.1B-intermediate-step-1431k-3T
+  teacher_path: path/to/teacher_model.bin
+  loss_fn: cumulative_mse
+  distil_into_arm: true
+  distil_class: delta_distil
+
+llama_distil_with_baseline:
+  reward_model_name: TinyLlama-1.1B-intermediate-step-1431k-3T
+  teacher_path: path/to/teacher_model.bin
+  loss_fn: cumulative_mse
+  distil_into_arm: true
+  distil_class: orig_distil
+  lm_head_name: linear_with_baseline
+  regularization: baseline_prior
+
+use_lora:
+  use_lora: true

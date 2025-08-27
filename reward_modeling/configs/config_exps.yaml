@@ -1,0 +1,41 @@
+mlp:
+  lm_head_name: mlp
+
+frozen_lm:
+  freeze_rm: true
+
+embeddings_lr:
+  embeddings_lr_mult: 1e-3
+
+low_weight_decay:
+  weight_decay: 0.0001
+
+linear_head_with_baseline:
+  lm_head_name: linear_with_baseline
+
+epochs_5:
+  num_train_epochs: 5
+
+regularization:
+  regularization: baseline_prior
+
+more_regularization:
+  regularization: baseline_prior_10
+
+regularization_3_neg:
+  regularization: baseline_prior_3
+
+weight_regularization:
+  regularization: weight_norm
+
+normalize_embeddings:
+  normalize_embeddings: true
+
+prepend_bos_token:
+  prepend_bos_token: true
+
+loss_ce:
+  loss_fn: cumulative_ce
+
+linear_head:
+  lm_head_name: linear

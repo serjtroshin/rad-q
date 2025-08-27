@@ -1,0 +1,96 @@
+default_model:
+  seed: 1
+  reward_model_name: gpt2
+  loss_fn: cumulative_mse
+  adam_beta1: 0.9
+  adam_beta2: 0.95
+  adam_epsilon: 1e-12
+  weight_decay: 0.01
+  warmup_steps: 0
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 4
+  eval_steps: 200
+  save_strategy: steps
+  save_steps: 500
+  max_length: 1024
+  logging_steps: 1000
+  max_grad_norm: 2.0
+  save_total_limit: 5
+  dtype: float32
+  eval_size: 1000
+  verbose: true
+  log_wandb: true
+
+  freeze_rm: false
+  lm_head_name: linear
+  save_safetensors: false
+  freeze_embeddings: true
+  embeddings_reg_loss: none
+  normalize_embeddings: false
+  optimizer_args: "head_lr=0.00001"
+  prepend_bos_token: true
+
+rm_toxicity:
+  out_features: 7
+  learning_rate: 2e-5
+  num_train_epochs: 1
+  datasets:
+    - jigsaw_unintended_bias
+  metrics: mse
+  jigsaw_dir: path/to/jigsaw_unintended_bias_data
+
+rm_soft_toxicity:
+  reward_model_name: gpt2-soft
+  loss_fn: cumulative_mse
+  freeze_embeddings: true
+
+rm_soft_toxicity_mse_loss:
+  reward_model_name: gpt2-soft
+  loss_fn: cumulative_mse
+  freeze_embeddings: true
+
+rm_soft_toxicity_ce_loss:
+  reward_model_name: gpt2-soft
+  loss_fn: cumulative_ce
+  freeze_embeddings: true
+
+toxicity_orig_labels_mlp:
+  reward_model_name: gpt2-soft
+  loss_fn: cumulative_mse
+  lm_head_name: mlp_with_baseline
+  freeze_embeddings: true
+  per_device_train_batch_size: 2
+  per_device_eval_batch_size: 2
+
+no_wandb:
+  log_wandb: false
+
+rm_sentiment:
+  out_features: 1
+  learning_rate: 1e-5
+  metrics: mse
+  jigsaw_dir: null
+  sst2_dir: path/to/sst2_dir/
+  amazon_dir: path/to/amazon_dir/
+
+amazon_polarity:
+  datasets:
+    - amazon_polarity
+  learning_rate: 1e-5
+  num_train_epochs: 1
+
+sentiment_distil:
+  reward_model_name: gpt2-soft-distil
+  teacher_path: null  # path to teacher model (.bin)
+  loss_fn: mse
+
+toxicity_distil:
+  reward_model_name: gpt2-soft-distil
+  teacher_path: null  # path to teacher model (.bin)
+  loss_fn: mse
+
+rm_soft_sentiment:
+  reward_model_name: gpt2-soft
+  log_wandb: true
+  loss_fn: cumulative_mse
+  freeze_embeddings: true
